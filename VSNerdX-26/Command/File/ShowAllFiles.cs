@@ -1,4 +1,4 @@
-using EnvDTE;
+﻿using EnvDTE;
 using Microsoft.VisualStudio.CommandBars;
 using System;
 using System.Windows.Forms;
@@ -30,8 +30,9 @@ namespace VsNerdX.Command.Navigation
                     Dte.ExecuteCommand("SolutionExplorer.Folder.ShowAllFiles");
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Logger?.Log($"ShowAllFiles failed: {ex.Message}");
             }
             executionContext = executionContext.Clear().With(mode: InputMode.Normal);
             return new ExecutionResult(executionContext, CommandState.Handled);

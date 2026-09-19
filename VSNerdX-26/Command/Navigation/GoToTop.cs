@@ -3,6 +3,8 @@ using System.Linq;
 using System.Windows.Forms;
 using VsNerdX.Core;
 
+using static VsNerdX.VsNerdXPackage;
+
 namespace VsNerdX.Command.Navigation
 {
     public class GoToTop : ICommand
@@ -27,8 +29,9 @@ namespace VsNerdX.Command.Navigation
                     ((HierarchyControl)this._hierarchyControl).helpViewControl.GoToTop();
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Logger?.Log($"GoToTop failed: {ex.Message}");
             }
 
             executionContext = executionContext.Clear().With(mode: InputMode.Normal);

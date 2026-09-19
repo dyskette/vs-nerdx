@@ -2,6 +2,8 @@
 using System.Windows.Forms;
 using VsNerdX.Core;
 
+using static VsNerdX.VsNerdXPackage;
+
 namespace VsNerdX.Command.Navigation
 {
     public class GoUp : ICommand
@@ -26,8 +28,9 @@ namespace VsNerdX.Command.Navigation
                     ((HierarchyControl)this._hierarchyControl).helpViewControl.LineUp();
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Logger?.Log($"GoUp failed: {ex.Message}");
             }
 
             return new ExecutionResult(executionContext.Clear(), CommandState.Handled);

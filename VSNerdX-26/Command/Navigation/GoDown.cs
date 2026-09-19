@@ -2,6 +2,8 @@
 using System.Windows.Forms;
 using VsNerdX.Core;
 
+using static VsNerdX.VsNerdXPackage;
+
 namespace VsNerdX.Command.Navigation
 {
     public class GoDown : ICommand
@@ -26,8 +28,9 @@ namespace VsNerdX.Command.Navigation
                     ((HierarchyControl) this._hierarchyControl).helpViewControl.LineDown();
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Logger?.Log($"GoDown failed: {ex.Message}");
             }
 
             return new ExecutionResult(executionContext.Clear(), CommandState.Handled);

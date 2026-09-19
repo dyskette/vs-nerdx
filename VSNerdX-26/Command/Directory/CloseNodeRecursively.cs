@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using VsNerdX.Core;
 using static VsNerdX.VsNerdXPackage;
 
@@ -21,8 +22,9 @@ namespace VsNerdX.Command.Directory
             {
                 Dte.ExecuteCommand("SolutionExplorer.CollapseAllDescendants");
             }
-            catch
+            catch (Exception ex)
             {
+                Logger?.Log($"CloseNodeRecursively failed: {ex.Message}");
             }
 
             return new ExecutionResult(executionContext.Clear(), CommandState.Handled);
