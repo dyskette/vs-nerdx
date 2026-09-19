@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="VSNerdX_26.7a821569-f2da-4550-aa95-23caa5d1b736" Version="1.0.1" Language="en-US" Publisher="Company" />
+        <Identity Id="VSNerdX_26.7a821569-f2da-4550-aa95-23caa5d1b736" Version="1.0.2" Language="en-US" Publisher="Company" />
         <DisplayName>VSNerdX_26</DisplayName>
         <Description xml:space="preserve">NERDTree inspired Solution Explorer for Visual Studio</Description>
         <License>LICENSE.txt</License>
