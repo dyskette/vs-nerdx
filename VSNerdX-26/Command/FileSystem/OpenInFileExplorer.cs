@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows.Forms;
 using VsNerdX.Core;
 using static VsNerdX.VsNerdXPackage;
@@ -20,8 +20,9 @@ namespace VsNerdX.Command.Navigation
             {
                 Dte.ExecuteCommand("File.OpeninFileExplorer");
             }
-            catch
+            catch (Exception ex)
             {
+                Logger?.Log($"File.OpeninFileExplorer failed: {ex.Message}");
             }
 
             executionContext = executionContext.Clear().With(mode: InputMode.Normal);

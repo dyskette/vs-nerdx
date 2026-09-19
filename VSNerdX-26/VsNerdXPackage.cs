@@ -27,6 +27,12 @@ namespace VsNerdX
         private Util.ILogger _logger;
 
         /// <summary>
+        ///     Logger for command implementations, which are constructed without one.
+        ///     A command that swallows a failure leaves no trace anywhere else.
+        /// </summary>
+        public static Util.ILogger Logger;
+
+        /// <summary>
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
         /// where you can put all the initialization code that rely on services provided by VisualStudio.
         /// </summary>
@@ -41,6 +47,7 @@ namespace VsNerdX
 
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             _logger = await OutputWindowLogger.CreateAsync(this);
+            Logger = _logger;
 
             _logger.Log("VSNerd loading on main thread");
             Dte = await GetServiceAsync(typeof(_DTE)) as DTE2;
