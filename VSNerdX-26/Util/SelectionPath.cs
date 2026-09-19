@@ -1,4 +1,4 @@
-using VsNerdX.Core;
+﻿using VsNerdX.Core;
 using static VsNerdX.VsNerdXPackage;
 
 namespace VsNerdX.Util
@@ -13,8 +13,10 @@ namespace VsNerdX.Util
         /// </summary>
         /// <param name="hierarchyControl">Hierarchy window holding the selection.</param>
         /// <returns>
-        ///     Full path, or the node's visible text when the node has no file behind
-        ///     it. Null when nothing is selected.
+        ///     Full path, or null when nothing is selected or the node has no file
+        ///     behind it, as with a solution folder. Callers that want a label in
+        ///     that case ask for one themselves: a method named Resolve must not
+        ///     answer with a string that only looks like a path.
         /// </returns>
         /// <remarks>
         ///     Open Folder workspaces expose the path on the visual node, while
@@ -52,7 +54,7 @@ namespace VsNerdX.Util
                 return Dte.Solution.FullName;
             }
 
-            return TreeHelper.GetText(selectedTreeNode);
+            return null;
         }
     }
 }

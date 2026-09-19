@@ -16,7 +16,10 @@ namespace VsNerdX.Command.Navigation
 
         public ExecutionResult Execute(IExecutionContext executionContext, Keys key)
         {
-            var path = SelectionPath.Resolve(this._hierarchyControl);
+            // A solution folder has no path, and copying its label is still the
+            // useful answer here, so the fallback lives with the caller wanting it.
+            var path = SelectionPath.Resolve(this._hierarchyControl)
+                       ?? TreeHelper.GetText(this._hierarchyControl.GetSelectedItem());
 
             if (path != null)
             {
