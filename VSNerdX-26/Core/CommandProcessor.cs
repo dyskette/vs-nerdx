@@ -119,8 +119,13 @@ namespace VsNerdX.Core
             // Find, help and mode handling
             commands.Add(new CommandKey(InputMode.Normal, Keys.Divide), new EnterFindMode(CommandState.Handled));
             commands.Add(new CommandKey(InputMode.Normal, Keys.OemQuestion), new EnterFindMode(CommandState.Handled));
+            // "?" is layout dependent: Oem2 is the /? key on a US layout, while
+            // Spanish and several other layouts put ? on the '? key, which Windows
+            // reports as OemOpenBrackets. Both are bound so the key works either way.
             commands.Add(new CommandKey(InputMode.Normal, Keys.Oem2 | Keys.Shift), new ToggleHelp(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Go, Keys.Oem2 | Keys.Shift), new ToggleHelp(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.OemOpenBrackets | Keys.Shift), new ToggleHelp(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Go, Keys.OemOpenBrackets | Keys.Shift), new ToggleHelp(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Normal, Keys.Escape), new ClearExecutionStack());
             commands.Add(new CommandKey(InputMode.Find, Keys.Escape), new LeaveFindMode());
         }
