@@ -21,8 +21,9 @@ namespace VsNerdX.Command.Navigation
             {
                 Dte.ExecuteCommand("Edit.Delete");
             }
-            catch
+            catch (Exception ex)
             {
+                Logger?.Log($"Delete failed: {ex.Message}");
             }
 
             executionContext = executionContext.Clear();

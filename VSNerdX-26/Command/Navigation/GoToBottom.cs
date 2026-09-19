@@ -1,5 +1,8 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using VsNerdX.Core;
+
+using static VsNerdX.VsNerdXPackage;
 
 namespace VsNerdX.Command.Navigation
 {
@@ -25,8 +28,9 @@ namespace VsNerdX.Command.Navigation
                     ((HierarchyControl)this._hierarchyControl).helpViewControl.GoToBottom();
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Logger?.Log($"GoToBottom failed: {ex.Message}");
             }
 
             return new ExecutionResult(executionContext.Clear(), CommandState.Handled);

@@ -21,8 +21,9 @@ namespace VsNerdX.Command.Navigation
             {
                 Dte.ExecuteCommand("Edit.Paste");
             }
-            catch
+            catch (Exception ex)
             {
+                Logger?.Log($"Paste failed: {ex.Message}");
             }
 
             return new ExecutionResult(executionContext.Clear(), CommandState.Handled);

@@ -20,8 +20,9 @@ namespace VsNerdX.Command.Navigation
             {
                 Dte.ExecuteCommand("File.Rename");
             }
-            catch
+            catch (Exception ex)
             {
+                Logger?.Log($"Rename failed: {ex.Message}");
             }
 
             return new ExecutionResult(executionContext.Clear(), CommandState.Handled);

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows.Forms;
 using VsNerdX.Core;
@@ -21,8 +21,9 @@ namespace VsNerdX.Command.Navigation
             {
                 Dte.ExecuteCommand("Edit.Cut");
             }
-            catch
+            catch (Exception ex)
             {
+                Logger?.Log($"CutFile failed: {ex.Message}");
             }
 
             executionContext = executionContext.Clear();

@@ -1,4 +1,4 @@
-using EnvDTE;
+﻿using EnvDTE;
 using Microsoft.VisualStudio.CommandBars;
 using System;
 using System.Windows.Forms;
@@ -22,8 +22,9 @@ namespace VsNerdX.Command.Navigation
             {
                 Dte.ExecuteCommand("View.Open");
             }
-            catch
+            catch (Exception ex)
             {
+                Logger?.Log($"Open failed: {ex.Message}");
             }
 
             executionContext = executionContext.Clear().With(mode: InputMode.Normal);
