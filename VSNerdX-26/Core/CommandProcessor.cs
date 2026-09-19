@@ -71,44 +71,57 @@ namespace VsNerdX.Core
 
         private void InitializeCommands()
         {
-            commands.Add(new CommandKey(InputMode.Normal, Keys.C), new CloseParentNode(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Normal, Keys.C | Keys.Shift), new CloseNodeRecursively(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Normal, Keys.O), new OpenOrCloseNode(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Normal, Keys.O | Keys.Shift), new OpenNodeRecursively(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Normal, Keys.M | Keys.Shift), new CloseAllNodes(this._hierarchyControl));
+            // Keys follow the VS Code explorer map that vscode-neovim installs,
+            // so the same fingers work in both editors. Where vscode-neovim binds
+            // nothing, nvim-tree's default is used instead: P, W, c, gy, ge, H.
+            //
+            // Enter is deliberately absent: CommandProcessor.OnKey passes it
+            // through unhandled so Visual Studio opens the selection itself.
 
+            // Navigation
             commands.Add(new CommandKey(InputMode.Normal, Keys.J), new GoDown(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Normal, Keys.J | Keys.Shift), new GoToLastChild(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Normal, Keys.K), new GoUp(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.J | Keys.Shift), new GoToLastChild(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Normal, Keys.K | Keys.Shift), new GoToFirtsChild(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Normal, Keys.H), new GoToParent(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Normal, Keys.G | Keys.Shift), new GoToBottom(this._hierarchyControl));
+            // h collapses the containing folder, matching list.collapse; P walks up.
+            commands.Add(new CommandKey(InputMode.Normal, Keys.H), new CloseParentNode(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.P | Keys.Shift), new GoToParent(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Normal, Keys.G), new EnterGoMode(CommandState.Handled));
             commands.Add(new CommandKey(InputMode.Go, Keys.G), new GoToTop(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.G | Keys.Shift), new GoToBottom(this._hierarchyControl));
 
-            commands.Add(new CommandKey(InputMode.Go, Keys.O), new PreviewFile(this._hierarchyControl));
+            // Opening
             commands.Add(new CommandKey(InputMode.Normal, Keys.L), new Open(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Normal, Keys.S), new OpenSplit(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.O), new OpenOrCloseNode(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.O | Keys.Shift), new OpenNodeRecursively(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Go, Keys.O), new PreviewFile(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Normal, Keys.V), new OpenVSplit(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Normal, Keys.I | Keys.Shift), new ShowAllFiles(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.S), new OpenSplit(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.C | Keys.Shift), new CloseNodeRecursively(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.W | Keys.Shift), new CloseAllNodes(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.M | Keys.Shift), new CloseAllNodes(this._hierarchyControl));
 
+            // File system
             commands.Add(new CommandKey(InputMode.Normal, Keys.A), new AddFile(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Normal, Keys.A | Keys.Shift), new AddFolder(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Normal, Keys.X), new Delete(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Normal, Keys.D), new CutFile(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Normal, Keys.P), new Paste(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Normal, Keys.R), new Rename(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Normal, Keys.Y), new EnterYankMode(CommandState.Handled));
-            commands.Add(new CommandKey(InputMode.Yank, Keys.Y), new CopyFile(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Yank, Keys.P), new CopyPath(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Yank, Keys.W), new CopyText(this._hierarchyControl));
-
+            commands.Add(new CommandKey(InputMode.Normal, Keys.D), new Delete(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.X), new CutFile(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.Y), new CopyFile(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.C), new CopyFile(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.P), new Paste(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Go, Keys.Y), new CopyPath(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Go, Keys.E), new CopyText(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.H | Keys.Shift), new ShowAllFiles(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.I | Keys.Shift), new ShowAllFiles(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Normal, Keys.E), new OpenInFileExplorer(this._hierarchyControl));
-            
+
+            // Find, help and mode handling
             commands.Add(new CommandKey(InputMode.Normal, Keys.Divide), new EnterFindMode(CommandState.Handled));
             commands.Add(new CommandKey(InputMode.Normal, Keys.OemQuestion), new EnterFindMode(CommandState.Handled));
-            commands.Add(new CommandKey(InputMode.Normal, Keys.Escape), new ClearExecutionStack());
             commands.Add(new CommandKey(InputMode.Normal, Keys.Oem2 | Keys.Shift), new ToggleHelp(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Go, Keys.Oem2 | Keys.Shift), new ToggleHelp(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.Escape), new ClearExecutionStack());
             commands.Add(new CommandKey(InputMode.Find, Keys.Escape), new LeaveFindMode());
         }
 
