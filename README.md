@@ -2,7 +2,13 @@
 [NERDTree](https://github.com/scrooloose/nerdtree) inspired Solution Explorer for Visual Studio. It integrates VIM bindings for tree navigation and manipulation into Visual Studio's hierarchy windows.
 
 # Install
-Build from source, install the resulting `VsNerdX.vsix`.
+Download [`VsNerdX.vsix`](https://github.com/dyskette/vs-nerdx/releases/latest/download/VsNerdX.vsix) from the latest release (its SHA256 is in `VsNerdX.vsix.sha256`) and open it, with Visual Studio closed.
+
+# Build
+`msbuild VsNerdX.sln /restore /p:Configuration=Release` builds `VSNerdX-26/bin/Release/VSNerdX-26.vsix`; it needs Visual Studio's MSBuild and the .NET Framework 4.7.2 targeting pack.
+
+# Release
+Bump `Version` in `VSNerdX-26/source.extension.vsixmanifest`, then push a matching tag (`v1.0.3` for `1.0.3`). The `Build` workflow builds every push and pull request, and publishes the VSIX for a tag; it fails if the tag and the manifest disagree.
 
 # Keys
 
