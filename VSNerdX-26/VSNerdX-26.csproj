@@ -70,6 +70,7 @@
     <Compile Include="Command\File\PreviewFile.cs" />
     <Compile Include="Command\File\ShowAllFiles.cs" />
     <Compile Include="Command\General\ClearExecutionStack.cs" />
+    <Compile Include="Command\General\CloseExplorer.cs" />
     <Compile Include="Command\General\EnterFindMode.cs" />
     <Compile Include="Command\General\EnterGoMode.cs" />
     <Compile Include="Command\General\EnterYankMode.cs" />

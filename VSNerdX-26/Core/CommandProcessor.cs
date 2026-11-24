@@ -71,9 +71,10 @@ namespace VsNerdX.Core
 
         private void InitializeCommands()
         {
-            // Keys follow the VS Code explorer map that vscode-neovim installs,
-            // so the same fingers work in both editors. Where vscode-neovim binds
-            // nothing, nvim-tree's default is used instead: P, W, c, gy, ge, H.
+            // Keys follow the snacks.nvim explorer map (LazyVim) as bound on the VS Code
+            // explorer: l h a A d r c m p y q, so the same fingers work in Neovim,
+            // VS Code and here. Where that map binds nothing, nvim-tree's default is
+            // used instead: P, W, gy, ge, H.
             //
             // Enter is deliberately absent: CommandProcessor.OnKey passes it
             // through unhandled so Visual Studio opens the selection itself.
@@ -106,15 +107,16 @@ namespace VsNerdX.Core
             commands.Add(new CommandKey(InputMode.Normal, Keys.A | Keys.Shift), new AddFolder(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Normal, Keys.R), new Rename(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Normal, Keys.D), new Delete(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Normal, Keys.X), new CutFile(this._hierarchyControl));
-            commands.Add(new CommandKey(InputMode.Normal, Keys.Y), new CopyFile(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.M), new CutFile(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Normal, Keys.C), new CopyFile(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Normal, Keys.P), new Paste(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.Y), new CopyPath(this._hierarchyControl, relative: true));
             commands.Add(new CommandKey(InputMode.Go, Keys.Y), new CopyPath(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Go, Keys.E), new CopyText(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Normal, Keys.H | Keys.Shift), new ShowAllFiles(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Normal, Keys.I | Keys.Shift), new ShowAllFiles(this._hierarchyControl));
             commands.Add(new CommandKey(InputMode.Normal, Keys.E), new OpenInFileExplorer(this._hierarchyControl));
+            commands.Add(new CommandKey(InputMode.Normal, Keys.Q), new CloseExplorer());
 
             // Find, help and mode handling
             commands.Add(new CommandKey(InputMode.Normal, Keys.Divide), new EnterFindMode(CommandState.Handled));

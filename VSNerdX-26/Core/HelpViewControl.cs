@@ -66,60 +66,23 @@ namespace VsNerdX.Core
 
             textBlock.Inlines.AddRange(new Inline[] {
                 new Bold(new Run(" VsNerdX " + VsixManifest.GetManifest().Version + " Quick Help")), new LineBreak(),
-                new Bold(new Run("==========================")), new LineBreak(),
-
-                new Bold(new Run(" Directory node mappings")), new LineBreak(),
-                new Run("--------------------------"), new LineBreak(),
-                new Bold(new Run(" o")), new Run(": open & close node"), new LineBreak(),
-                new Bold(new Run(" O")), new Run(": recursively open node"), new LineBreak(),
-                new Bold(new Run(" c")), new Run(": close parent of node"), new LineBreak(),
-                new Bold(new Run(" C")), new Run(": recursively close child nodes"), new LineBreak(),
-                new Bold(new Run(" M")), new Run(": close all nodes"), new LineBreak(), new LineBreak(),
-
-                new Bold(new Run(" File node mappings")), new LineBreak(),
-                new Run("--------------------------"), new LineBreak(),
-                new Bold(new Run(" l")), new Run(": open file"), new LineBreak(),
-                new Bold(new Run(" go")), new Run(": preview file"), new LineBreak(),
-                new Bold(new Run(" s")), new Run(": open horizontal split"), new LineBreak(),
-                new Bold(new Run(" v")), new Run(": open vertical split"), new LineBreak(),
-                new Bold(new Run(" e")), new Run(": open in file explorer"), new LineBreak(), new LineBreak(),
-
-                new Bold(new Run(" Tree navigation mappings")), new LineBreak(),
-                new Run("--------------------------"), new LineBreak(),
-                new Bold(new Run(" h")), new Run(": go to parent"), new LineBreak(),
-                new Bold(new Run(" j")), new Run(": go down"), new LineBreak(),
-                new Bold(new Run(" J")), new Run(": go to last child"), new LineBreak(),
-                new Bold(new Run(" k")), new Run(": go up"), new LineBreak(),
-                new Bold(new Run(" K")), new Run(": go to first child"), new LineBreak(),
-                new Bold(new Run(" gg")), new Run(": go to top"), new LineBreak(),
-                new Bold(new Run(" G")), new Run(": go to bottom"), new LineBreak(), new LineBreak(),
-
-                new Bold(new Run(" Node editing mappings")), new LineBreak(),
-                new Run("--------------------------"), new LineBreak(),
-                new Bold(new Run(" a")), new Run(": add file"), new LineBreak(),
-                new Bold(new Run(" A")), new Run(": add folder"), new LineBreak(),
-                new Bold(new Run(" x")), new Run(": delete"), new LineBreak(),
-                new Bold(new Run(" d")), new Run(": cut"), new LineBreak(),
-                new Bold(new Run(" p")), new Run(": paste"), new LineBreak(),
-                new Bold(new Run(" r")), new Run(": rename"), new LineBreak(),
-                new Bold(new Run(" yy")), new Run(": copy file"), new LineBreak(),
-                new Bold(new Run(" yp")), new Run(": copy full path"), new LineBreak(),
-                new Bold(new Run(" yw")), new Run(": copy visible text"), new LineBreak(), new LineBreak(),
-
-                new Bold(new Run(" Tree filtering mappings")), new LineBreak(),
-                new Run("--------------------------"), new LineBreak(),
-                new Bold(new Run(" I")), new Run(": toggle show all files"), new LineBreak(), new LineBreak(),
-
-                new Bold(new Run(" Search mappings")), new LineBreak(),
-                new Run("--------------------------"), new LineBreak(),
-                new Bold(new Run(" /")), new Run(": enter find mode"), new LineBreak(),
-                new Bold(new Run(" ?")), new Run(": enter find mode"), new LineBreak(),
-                new Bold(new Run(" Esc")), new Run(": exit find mode / clear command"), new LineBreak(), new LineBreak(),
-
-                new Bold(new Run(" Other mappings")), new LineBreak(),
-                new Run("--------------------------"), new LineBreak(),
-                new Bold(new Run(" ?")), new Run(": toggle help")
+                new Bold(new Run("==========================")), new LineBreak(), new LineBreak(),
             });
+
+            // The same groups and keys as the README and CommandProcessor.InitializeCommands.
+            Section(textBlock, "Navigation",
+                ("j / k", "down / up"), ("J / K", "last / first child"), ("h", "collapse the containing folder"),
+                ("P", "go to parent"), ("gg / G", "top / bottom"));
+            Section(textBlock, "Opening",
+                ("l", "open"), ("o / O", "toggle node / open recursively"), ("go", "preview"),
+                ("v / s", "open in vertical / horizontal split"), ("C", "close node recursively"),
+                ("W / M", "collapse everything"));
+            Section(textBlock, "Files",
+                ("a / A", "new file / new folder"), ("r", "rename"), ("d", "delete"), ("m", "cut"), ("c", "copy"),
+                ("p", "paste"), ("y", "copy relative path"), ("gy", "copy full path"), ("ge", "copy visible text"),
+                ("H / I", "toggle show all files"), ("e", "open in File Explorer"), ("q", "close Solution Explorer"));
+            Section(textBlock, "Find and help",
+                ("/", "find"), ("Esc", "leave find mode, or clear a pending prefix"), ("?", "toggle help"));
 
             _scrollView.Content = textBlock;
             _scrollView.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
@@ -132,6 +95,24 @@ namespace VsNerdX.Core
             Grid.SetColumn(_helpStackPanel, 0);
             Grid.SetRow(_helpStackPanel, 0);
             _hierarchyControl.ContentGrid.Children.Add(_helpStackPanel);
+        }
+
+        /// <summary>
+        ///     Appends a titled group of "key: action" lines.
+        /// </summary>
+        private static void Section(TextBlock textBlock, string title, params (string Key, string Action)[] lines)
+        {
+            textBlock.Inlines.Add(new Bold(new Run(" " + title)));
+            textBlock.Inlines.Add(new LineBreak());
+            textBlock.Inlines.Add(new Run("--------------------------"));
+            textBlock.Inlines.Add(new LineBreak());
+            foreach (var (key, action) in lines)
+            {
+                textBlock.Inlines.Add(new Bold(new Run(" " + key)));
+                textBlock.Inlines.Add(new Run(": " + action));
+                textBlock.Inlines.Add(new LineBreak());
+            }
+            textBlock.Inlines.Add(new LineBreak());
         }
 
         public bool IsVisible()
